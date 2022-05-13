@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface PasswordsRepository extends JpaRepository <Passwords, Long > {
     List<Passwords> findAll();
-    Passwords findByNazwaStrony(String nazwaStriny);
-    Passwords findById(String Id);
-    Passwords save();
-    Passwords deleteById(String Id);
+    List<Passwords> findAllByUrlIsContainingIgnoreCase(String url);
+    List<Passwords> findAllByEmail(String email);
 }
