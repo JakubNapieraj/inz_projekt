@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "id"))
 public class Passwords {
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,7 +21,6 @@ public class Passwords {
     private LocalDateTime lastChange;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Passwords() {}

@@ -12,5 +12,7 @@ public interface PasswordsService {
     public List<PasswordsDto> findAllByEmail(String email);
 
     public List<PasswordsDto> findAll();
+
+    public void saveNewPassword(PasswordsDto passwordsDto);
 }
 

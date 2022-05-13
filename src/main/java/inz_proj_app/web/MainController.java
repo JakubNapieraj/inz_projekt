@@ -15,7 +15,8 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String root() {
+    public String root(Model model) {
+        model.addAttribute("passwordsDto", passwordsService.findAll());
         return "index";
     }
 
@@ -25,8 +26,7 @@ public class MainController {
     }
 
     @GetMapping("/user")
-    public String userIndex(Model model) {
-        model.addAttribute("passwordsDto", passwordsService.findAll());
+    public String userIndex() {
         return "user/index";
     }
 }
