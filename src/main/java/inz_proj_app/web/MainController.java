@@ -1,11 +1,18 @@
 package inz_proj_app.web;
 
+import inz_proj_app.service.PasswordsServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
+
+    private PasswordsServiceImpl passwordsService;
+
+    public MainController(PasswordsServiceImpl passwordsService) {
+        this.passwordsService = passwordsService;
+    }
 
     @GetMapping("/")
     public String root() {
@@ -18,7 +25,8 @@ public class MainController {
     }
 
     @GetMapping("/user")
-    public String userIndex() {
+    public String userIndex(Model model) {
+        model.addAttribute("passwordsDto", passwordsService.findAll());
         return "user/index";
     }
 }
