@@ -14,5 +14,7 @@ public interface PasswordsService {
     public List<PasswordsDto> findAll();
 
     public void saveNewPassword(PasswordsDto passwordsDto);
+
+    public List<PasswordsDto> findPasswordsByUser();
 }
 

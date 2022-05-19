@@ -9,6 +9,8 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -49,25 +51,24 @@ public class PasswordsServiceImpl implements PasswordsService{
     }
 
     @Override
+    public List<PasswordsDto> findPasswordsByUser() {
+        User user = getCurrentUser();
+        return passwordsRepository.findPasswordsByUser(user)
+                .stream()
+                .map(this::loadPassword)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void saveNewPassword(PasswordsDto passwordsDto) {
         Passwords passwords = new Passwords();
+
         passwords.setUrl(passwordsDto.getUrl());
         passwords.setPasswordHash(passwordsDto.getPasswordHash());
-        passwords.setEmail(passwordsDto.getEmail());
+        passwords.setEmail((passwordsDto.getEmail()));
         passwords.setLastChange(LocalDateTime.now());
 
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user;
-        if (principal instanceof UserDetails) {
-            String username = ((UserDetails)principal).getUsername();
-
-           user = repository.findByEmail(username);
-            passwords.setUser(user);
-        } else {
-            String username = principal.toString();
-        }
-
+        passwords.setUser(getCurrentUser());
 
         passwordsRepository.save(passwords);
     }
@@ -90,5 +91,18 @@ public class PasswordsServiceImpl implements PasswordsService{
         passwords.setUrl(dto.getUrl());
         return passwords;
     }
+
+    private User getCurrentUser(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user;
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails)principal).getUsername();
+
+            user = repository.findByEmail(username);
+            return user;
+        }else return null;
+    }
+
+
 }
 

@@ -16,7 +16,7 @@ public class MainController {
 
     @GetMapping("/")
     public String root(Model model) {
-        model.addAttribute("passwordsDto", passwordsService.findAll());
+        model.addAttribute("passwordsDto", passwordsService.findPasswordsByUser());
         return "index";
     }
 
