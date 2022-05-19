@@ -9,8 +9,15 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +30,9 @@ public class PasswordsServiceImpl implements PasswordsService{
 
     @Autowired
     UserRepository repository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<PasswordsDto> findAllByUrl(String url) {
@@ -50,9 +60,10 @@ public class PasswordsServiceImpl implements PasswordsService{
 
     @Override
     public void saveNewPassword(PasswordsDto passwordsDto) {
+
         Passwords passwords = new Passwords();
         passwords.setUrl(passwordsDto.getUrl());
-        passwords.setPasswordHash(passwordsDto.getPasswordHash());
+        passwords.setPasswordHash(passwordEncoder.encode(passwordsDto.getPasswordHash()));
         passwords.setEmail(passwordsDto.getEmail());
         passwords.setLastChange(LocalDateTime.now());
 
@@ -73,6 +84,7 @@ public class PasswordsServiceImpl implements PasswordsService{
     }
 
     private PasswordsDto loadPassword(Passwords password) {
+        // TUTAJ BĘDZIE ODCZYT HASHOWANEGO HASŁA
         PasswordsDto passwordsDto = new PasswordsDto();
         passwordsDto.setEmail(password.getEmail());
         passwordsDto.setPasswordHash(password.getPasswordHash());
