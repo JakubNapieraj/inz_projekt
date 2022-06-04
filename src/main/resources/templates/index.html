@@ -5,11 +5,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 
-    <title>Registration</title>
+    <title>Password Manager</title>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -35,7 +34,7 @@
 <br>
 <br>
 <div class="container">
-    <h2>Udało się zalogować, wyświetl wszystkie hasła i pozwól mi wprowadzić</h2>
+    <h2>Login successful - here are your saved passwords</h2>
 
     <p>
         Welcome <span sec:authentication="principal.username">User</span>
@@ -55,7 +54,7 @@
     }
 
     button:hover {
-        transform: scale(1.1);
+        transform: translateY(-5px);
     }
 
     .table_header {
@@ -73,50 +72,40 @@
 </style>
 <div class="row m-t-25">
 
-    <div class="row">
+    <div class="container">
         <div class="col-lg-9">
             <div class="table_header">
-            <h2 class="title-1 m-b-25">Zapisane hasła</h2>
+            <h2 class="title-1 m-b-25">Saved passwords</h2>
                 <div class="search_password">
                     <input type=search class="search_form">
                     <button>Szukaj</button>
                 </div>
-                <a href="http://www.google.com" target="_parent"><button>+</button></a>
+                <a href="/password/add" target="_parent" method="get"><button>+</button></a>
             </div>
             <div class="table-responsive table--no-card m-b-40">
                 <table class="table table-borderless table-striped table-earning">
                     <thead>
                     <tr>
 
-                        <th>Domena</th>
-                        <th>Login</th>
-                        <th>Hasło</th>
-                        <th>Ostatnia zmiana</th>
-                        <th><!--kolumna z buttonem do usuwania--></th>
+                        <th>DOMAIN</th>
+                        <th>LOGIN</th>
+                        <th>PASSWORD</th>
+                        <th>LAST CHANGE</th>
+                        <th></th>
 
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="meal: ${mealDTO}">
+                    <tr th:each="password: ${passwordsDto}">
 
-                        <td th:text="${meal.mealName}"></td>
-                        <td th:text="${meal.description}"></td>
-                        <td th:text="${meal.price}"></td>
-                        <td th:text="${meal.days}"></td>
-                        <td><span th:text="${meal.active} ? 'Aktywny' : 'Nieaktywny'"></span></td>
-                        <td>
-                            <form th:action="@{'/meals/set-meal-active/{id}'(id=${meal.id})}"
-                                  th:object="${meal}">
-                                <button type="submit"></button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="#" th:action="@{'/meals/delete/{id}'(id=${meal.id})}"
-                                  th:object="${meal}" th:method="delete">
-
-                                <button type="submit" id="submitButton"></button>
-
-                            </form>
+                        <td th:text="${password.url}"></td>
+                        <td th:text="${password.email}"></td>
+                        <td th:text="${password.passwordHash}"></td>
+                        <td th:text="${password.lastChange}"></td>
+                        <td><button>Delete</button>
+                            <a href="/password/update" target="_parent" method="get">
+                                <button>Update</button>
+                            </a>
                         </td>
                     </tr>
                     </tbody>
