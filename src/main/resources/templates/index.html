@@ -73,7 +73,7 @@
 </style>
 <div class="row m-t-25">
 
-    <div class="row">
+    <div class="container">
         <div class="col-lg-9">
             <div class="table_header">
             <h2 class="title-1 m-b-25">Zapisane hasła</h2>
@@ -81,43 +81,28 @@
                     <input type=search class="search_form">
                     <button>Szukaj</button>
                 </div>
-                <a href="http://www.google.com" target="_parent"><button>+</button></a>
+                <a href="/password/add" target="_parent" method="get"><button>+</button></a>
             </div>
             <div class="table-responsive table--no-card m-b-40">
                 <table class="table table-borderless table-striped table-earning">
                     <thead>
                     <tr>
 
-                        <th>Domena</th>
-                        <th>Login</th>
-                        <th>Hasło</th>
-                        <th>Ostatnia zmiana</th>
-                        <th><!--kolumna z buttonem do usuwania--></th>
+                        <th>DOMENA</th>
+                        <th>LOGIN</th>
+                        <th>HASŁO</th>
+                        <th>OSTATNIA ZMIANA</th>
+<!--                        <th>&lt;!&ndash;kolumna z buttonem do usuwania&ndash;&gt;</th>-->
 
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="meal: ${mealDTO}">
+                    <tr th:each="password: ${passwordsDto}">
 
-                        <td th:text="${meal.mealName}"></td>
-                        <td th:text="${meal.description}"></td>
-                        <td th:text="${meal.price}"></td>
-                        <td th:text="${meal.days}"></td>
-                        <td><span th:text="${meal.active} ? 'Aktywny' : 'Nieaktywny'"></span></td>
-                        <td>
-                            <form th:action="@{'/meals/set-meal-active/{id}'(id=${meal.id})}"
-                                  th:object="${meal}">
-                                <button type="submit"></button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="#" th:action="@{'/meals/delete/{id}'(id=${meal.id})}"
-                                  th:object="${meal}" th:method="delete">
-
-                                <button type="submit" id="submitButton"></button>
-
-                            </form>
-                        </td>
+                        <td th:text="${password.url}"></td>
+                        <td th:text="${password.email}"></td>
+                        <td th:text="${password.passwordHash}"></td>
+                        <td th:text="${password.lastChange}"></td>
                     </tr>
                     </tbody>
                 </table>
