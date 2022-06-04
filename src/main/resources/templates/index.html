@@ -5,11 +5,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 
-    <title>Registration</title>
+    <title>Password Manager</title>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -35,7 +34,7 @@
 <br>
 <br>
 <div class="container">
-    <h2>Udało się zalogować, wyświetl wszystkie hasła i pozwól mi wprowadzić</h2>
+    <h2>Login successful - here are your saved passwords</h2>
 
     <p>
         Welcome <span sec:authentication="principal.username">User</span>
@@ -55,7 +54,7 @@
     }
 
     button:hover {
-        transform: scale(1.1);
+        transform: translateY(-5px);
     }
 
     .table_header {
@@ -76,7 +75,7 @@
     <div class="container">
         <div class="col-lg-9">
             <div class="table_header">
-            <h2 class="title-1 m-b-25">Zapisane hasła</h2>
+            <h2 class="title-1 m-b-25">Saved passwords</h2>
                 <div class="search_password">
                     <input type=search class="search_form">
                     <button>Szukaj</button>
@@ -88,11 +87,11 @@
                     <thead>
                     <tr>
 
-                        <th>DOMENA</th>
+                        <th>DOMAIN</th>
                         <th>LOGIN</th>
-                        <th>HASŁO</th>
-                        <th>OSTATNIA ZMIANA</th>
-<!--                        <th>&lt;!&ndash;kolumna z buttonem do usuwania&ndash;&gt;</th>-->
+                        <th>PASSWORD</th>
+                        <th>LAST CHANGE</th>
+                        <th></th>
 
                     </tr>
                     </thead>
@@ -103,6 +102,11 @@
                         <td th:text="${password.email}"></td>
                         <td th:text="${password.passwordHash}"></td>
                         <td th:text="${password.lastChange}"></td>
+                        <td><button>Delete</button>
+                            <a href="/password/update" target="_parent" method="get">
+                                <button>Update</button>
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
