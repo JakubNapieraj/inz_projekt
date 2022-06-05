@@ -35,14 +35,47 @@ class PasswordsServiceImplTest {
 
     @Test
     void findAllByUrl() {
+        //given
+        User user = buildNewUser();
+        Passwords passwords = buildNewPasswords(user);
+        List<PasswordsDto> expectedList = Collections.singletonList(buildDto(passwords));
+
+        repository.save(passwords);
+
+        when(passwordsService.findAllByUrl(passwords.getUrl())).thenReturn(expectedList);
+
+        //whenThen
+        assertEquals(passwordsService.findAllByUrl(passwords.getUrl()), expectedList);
     }
 
     @Test
     void findAllByEmail() {
+        //given
+        User user = buildNewUser();
+        Passwords passwords = buildNewPasswords(user);
+        List<PasswordsDto> expectedList = Collections.singletonList(buildDto(passwords));
+
+        repository.save(passwords);
+
+        when(passwordsService.findAllByEmail(user.getEmail())).thenReturn(expectedList);
+
+        //whenThen
+        assertEquals(passwordsService.findAllByEmail(user.getEmail()), expectedList);
     }
 
     @Test
     void findAll() {
+        //given
+        User user = buildNewUser();
+        Passwords passwords = buildNewPasswords(user);
+        List<PasswordsDto> expectedList = Collections.singletonList(buildDto(passwords));
+
+        repository.save(passwords);
+
+        when(passwordsService.findAll()).thenReturn(expectedList);
+
+        //whenThen
+        assertEquals(passwordsService.findAll(), expectedList);
     }
 
     @Test
@@ -62,6 +95,17 @@ class PasswordsServiceImplTest {
 
     @Test
     void saveNewPassword() {
+//        //given
+//        User user = buildNewUser();
+//        Passwords password = buildNewPasswords(user);
+//        List<PasswordsDto> expectedList = Collections.singletonList(buildDto(password));
+//        repository.save(password);
+//
+//        //when
+//        when(passwordsService.saveNewPassword(buildDto(password))).thenReturn(expectedList);
+//
+//        //then
+//        assertEquals(passwordsService.saveNewPassword(password), expectedList);
     }
 
     private User buildNewUser(){
@@ -70,7 +114,7 @@ class PasswordsServiceImplTest {
         user.setPassword("password");
         user.setFirstName("imie");
         user.setLastName("nazwisko");
-        user.setRoles(Arrays.asList(new Role("ROLE_USER")));
+        user.setRoles(Collections.singletonList(new Role("ROLE_USER")));
         return user;
     }
 
