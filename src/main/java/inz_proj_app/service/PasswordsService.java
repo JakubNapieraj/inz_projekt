@@ -20,5 +20,7 @@ public interface PasswordsService {
 
     public void updatePassword(Long id, PasswordsDto passwordsDto);
     public PasswordsDto findPasswordById(Long id);
+
+    public List<PasswordsDto> findAllByEmailOrUrl(String input);
 }
 

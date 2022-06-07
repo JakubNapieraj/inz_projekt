@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -84,6 +83,14 @@ public class PasswordsServiceImpl implements PasswordsService{
                 .findFirst()
                 .map(this::loadPassword)
                 .get();
+    }
+
+    @Override
+    public List<PasswordsDto> findAllByEmailOrUrl(String input) {
+        return passwordsRepository.findAllByUrlIsContainingIgnoreCaseAndUserEquals(input, getCurrentUser())
+                .stream()
+                .map(this::loadPassword)
+                .collect(Collectors.toList());
     }
 
     @Override

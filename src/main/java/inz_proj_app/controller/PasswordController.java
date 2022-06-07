@@ -6,10 +6,7 @@ import inz_proj_app.model.Passwords;
 import inz_proj_app.service.PasswordsServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
@@ -30,13 +27,13 @@ public class PasswordController {
     }
 
     @PostMapping("/password/add")
-    public RedirectView addPassword(@ModelAttribute("password") @Valid PasswordsDto passwordsDto){
+    public RedirectView addPassword(@ModelAttribute("password") @Valid PasswordsDto passwordsDto) {
         passwordsService.saveNewPassword(passwordsDto);
         return new RedirectView("/");
     }
 
     @PostMapping("/password/delete/{id}")
-    public RedirectView deletePassword(@PathVariable Long id){
+    public RedirectView deletePassword(@PathVariable Long id) {
         passwordsService.deletePassword(id);
         return new RedirectView("/");
     }
@@ -48,8 +45,19 @@ public class PasswordController {
     }
 
     @PostMapping("/password/update/save/{id}")
-    public RedirectView updatePassword(@PathVariable Long id,@ModelAttribute("passwords") @Valid PasswordsDto passwordsDto){
+    public RedirectView updatePassword(@PathVariable Long id, @ModelAttribute("passwords") @Valid PasswordsDto passwordsDto) {
         passwordsService.updatePassword(id, passwordsDto);
         return new RedirectView("/");
+    }
+
+
+    @RequestMapping(path = {"/", "/search"})
+    public String home(Model model, String keyword) {
+        if (keyword != null) {
+            model.addAttribute("passwordsDto", passwordsService.findAllByEmailOrUrl(keyword));
+        } else {
+            model.addAttribute("passwordsDto", passwordsService.findPasswordsByUser());
+        }
+        return "index";
     }
 }

@@ -77,8 +77,10 @@
             <div class="table_header">
             <h2 class="title-1 m-b-25">Saved passwords</h2>
                 <div class="search_password">
-                    <input type=search class="search_form">
-                    <button>Szukaj</button>
+                    <form th:action="@{/search}" method="get">
+                        <input type="text" name="keyword" th:value="${keyword}"  placeholder="Find by Owner Name & Shop Type" size="50" >
+                        <button type="submit" class="btn btn-info" >Search</button>
+                    </form>
                 </div>
                 <a href="/password/add" target="_parent" method="get"><button>Dodaj</button></a>
             </div>
