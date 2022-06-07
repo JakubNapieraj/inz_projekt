@@ -103,7 +103,7 @@
                         <td th:text="${password.url}"></td>
                         <td th:text="${password.email}"></td>
                         <td th:text="${password.passwordHash}"></td>
-                        <td th:text="${password.lastChange}"></td>
+                        <td th:text="${#temporals.format(password.lastChange, 'dd-MM-yyyy HH:mm')}"></td>
                         <td>
                             <form action="#" th:action="@{'/password/delete/{id}'(id=${password.id})}"
                                   th:object="${password}" th:method="delete">
