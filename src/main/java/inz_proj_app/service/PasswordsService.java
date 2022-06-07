@@ -18,7 +18,7 @@ public interface PasswordsService {
 
     public void deletePassword(Long id);
 
-    public void updatePassword(PasswordsDto passwordsDto);
+    public void updatePassword(Long id, PasswordsDto passwordsDto);
     public PasswordsDto findPasswordById(Long id);
 }
 

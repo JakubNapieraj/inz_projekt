@@ -47,9 +47,9 @@ public class PasswordController {
         return "updatePassword";
     }
 
-    @PostMapping("/password/update/save/")
-    public RedirectView updatePassword(@ModelAttribute("password") @Valid PasswordsDto passwordsDto){
-        passwordsService.saveNewPassword(passwordsDto);
+    @PostMapping("/password/update/save/{id}")
+    public RedirectView updatePassword(@PathVariable Long id,@ModelAttribute("passwords") @Valid PasswordsDto passwordsDto){
+        passwordsService.updatePassword(id, passwordsDto);
         return new RedirectView("/");
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,15 +64,17 @@ public class PasswordsServiceImpl implements PasswordsService{
     }
 
     @Override
-    public void updatePassword(PasswordsDto passwordsDto) {
-        Optional<Passwords> passwords = passwordsRepository.findById(passwordsDto.getId());
+    public void updatePassword(Long id, PasswordsDto passwordsDto) {
+        Optional<Passwords> passwords = passwordsRepository.findById(id);
         if (passwords.isPresent()){
             passwords.get().setPasswordHash(passwordsDto.getPasswordHash());
             passwords.get().setEmail(passwordsDto.getEmail());
             passwords.get().setUrl(passwordsDto.getUrl());
             passwords.get().setLastChange(LocalDateTime.now());
+            Passwords pass = passwords.get();
+            passwordsRepository.save(passwords.get());
         }
-        passwordsRepository.save(passwords);
+
     }
 
     @Override
