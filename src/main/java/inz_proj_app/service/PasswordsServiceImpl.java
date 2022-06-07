@@ -5,16 +5,14 @@ import inz_proj_app.model.Passwords;
 import inz_proj_app.model.User;
 import inz_proj_app.repository.PasswordsRepository;
 import inz_proj_app.repository.UserRepository;
-import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,6 +58,32 @@ public class PasswordsServiceImpl implements PasswordsService{
     }
 
     @Override
+    public void deletePassword(Long id) {
+        passwordsRepository.deleteById(id);
+    }
+
+    @Override
+    public void updatePassword(PasswordsDto passwordsDto) {
+        Optional<Passwords> passwords = passwordsRepository.findById(passwordsDto.getId());
+        if (passwords.isPresent()){
+            passwords.get().setPasswordHash(passwordsDto.getPasswordHash());
+            passwords.get().setEmail(passwordsDto.getEmail());
+            passwords.get().setUrl(passwordsDto.getUrl());
+            passwords.get().setLastChange(LocalDateTime.now());
+        }
+        passwordsRepository.save(passwords);
+    }
+
+    @Override
+    public PasswordsDto findPasswordById(Long id) {
+        return passwordsRepository.findById(id)
+                .stream()
+                .findFirst()
+                .map(this::loadPassword)
+                .get();
+    }
+
+    @Override
     public void saveNewPassword(PasswordsDto passwordsDto) {
         Passwords passwords = new Passwords();
 
@@ -75,6 +99,7 @@ public class PasswordsServiceImpl implements PasswordsService{
 
     private PasswordsDto loadPassword(Passwords password) {
         PasswordsDto passwordsDto = new PasswordsDto();
+        passwordsDto.setId(password.getId());
         passwordsDto.setEmail(password.getEmail());
         passwordsDto.setPasswordHash(password.getPasswordHash());
         passwordsDto.setUrl(password.getUrl());
@@ -102,7 +127,5 @@ public class PasswordsServiceImpl implements PasswordsService{
             return user;
         }else return null;
     }
-
-
 }
 

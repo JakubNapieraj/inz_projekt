@@ -14,6 +14,4 @@ public interface PasswordsRepository extends JpaRepository <Passwords, Long > {
     List<Passwords> findAllByUrlIsContainingIgnoreCase(String url);
     List<Passwords> findAllByEmail(String email);
     List<Passwords> findPasswordsByUser(User user);
-
-
 }

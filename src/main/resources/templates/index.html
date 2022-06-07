@@ -80,7 +80,7 @@
                     <input type=search class="search_form">
                     <button>Szukaj</button>
                 </div>
-                <a href="/password/add" target="_parent" method="get"><button>+</button></a>
+                <a href="/password/add" target="_parent" method="get"><button>Dodaj</button></a>
             </div>
             <div class="table-responsive table--no-card m-b-40">
                 <table class="table table-borderless table-striped table-earning">
@@ -102,10 +102,18 @@
                         <td th:text="${password.email}"></td>
                         <td th:text="${password.passwordHash}"></td>
                         <td th:text="${password.lastChange}"></td>
-                        <td><button>Delete</button>
-                            <a href="/password/update" target="_parent" method="get">
+                        <td>
+                            <form action="#" th:action="@{'/password/delete/{id}'(id=${password.id})}"
+                                  th:object="${password}" th:method="delete">
+                                <button>Delete</button>
+                            </form>
+                            <form action="#" th:action="@{'/password/update/{id}'(id=${password.id})}"
+                                  th:object="${password}" th:method="post">
                                 <button>Update</button>
-                            </a>
+                            </form>
+<!--                            <a href="/password/update" target="_parent" method="get">-->
+<!--                                <button>Update</button>-->
+<!--                            </a>-->
                         </td>
                     </tr>
                     </tbody>

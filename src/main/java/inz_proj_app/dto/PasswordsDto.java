@@ -3,6 +3,8 @@ package inz_proj_app.dto;
 import java.time.LocalDateTime;
 
 public class PasswordsDto {
+
+    private Long id;
     private String email;
     private String passwordHash;
     private String url;
@@ -22,6 +24,14 @@ public class PasswordsDto {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUrl() {

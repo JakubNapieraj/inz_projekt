@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -30,6 +31,24 @@ public class PasswordController {
 
     @PostMapping("/password/add")
     public RedirectView addPassword(@ModelAttribute("password") @Valid PasswordsDto passwordsDto){
+        passwordsService.saveNewPassword(passwordsDto);
+        return new RedirectView("/");
+    }
+
+    @PostMapping("/password/delete/{id}")
+    public RedirectView deletePassword(@PathVariable Long id){
+        passwordsService.deletePassword(id);
+        return new RedirectView("/");
+    }
+
+    @PostMapping("/password/update/{id}")
+    public String preparePasswordForUpdate(@PathVariable Long id, Model model) {
+        model.addAttribute("password", passwordsService.findPasswordById(id));
+        return "updatePassword";
+    }
+
+    @PostMapping("/password/update/save/")
+    public RedirectView updatePassword(@ModelAttribute("password") @Valid PasswordsDto passwordsDto){
         passwordsService.saveNewPassword(passwordsDto);
         return new RedirectView("/");
     }
